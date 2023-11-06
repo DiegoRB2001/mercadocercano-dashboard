@@ -1,5 +1,5 @@
 const { NextResponse } = require("next/server");
-import { app } from "@/lib/firebase";
+import { app } from "@/lib/firebase/firebase";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
@@ -12,7 +12,9 @@ export async function GET() {
     try {
       const markets = [];
       const querySnapshot = await getDocs(collection(db, "markets"));
-      querySnapshot.forEach((doc) => markets.push(doc.data()));
+      querySnapshot.forEach((doc) =>
+        markets.push({ ...doc.data(), id: doc.id })
+      );
       return NextResponse.json(markets);
     } catch (error) {
       if (error instanceof Error)

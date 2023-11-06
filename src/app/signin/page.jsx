@@ -1,6 +1,5 @@
 "use client";
 
-import Map from "@/components/Map";
 import { Button, Chip, Input } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";

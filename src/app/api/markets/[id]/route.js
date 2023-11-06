@@ -1,5 +1,5 @@
 const { NextResponse } = require("next/server");
-import { app } from "@/lib/firebase";
+import { app } from "@/lib/firebase/firebase";
 import { getFirestore, getDoc, doc } from "firebase/firestore";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";

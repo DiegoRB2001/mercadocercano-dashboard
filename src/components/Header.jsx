@@ -23,26 +23,23 @@ const Header = () => {
   const { data: session } = useSession();
   return pathname !== "/signin" ? (
     <Navbar maxWidth="full" isBordered>
-      <Logo />
-      <NavbarBrand>
+      <NavbarBrand as="div" className="gap-5">
+        <Logo />
         <p className="font-bold text-inherit">Mercado Cercano</p>
+        <ThemeSwitch />
       </NavbarBrand>
-
-      <NavbarContent as="div" justify="end">
+      <NavbarContent as="div" justify="center">
         <NavbarItem>
-          <Link as={NextLink} color="primary" href="/addmarket">
+          <Link as={NextLink} color="success" href="/addmarket">
             Agregar mercado
           </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <ThemeSwitch />
         </NavbarItem>
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Chip className="cursor-pointer">{session?.user.email}</Chip>
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="logout" color="danger" onClick={() => signOut()}>
+            <DropdownItem key="theme" color="danger" onClick={() => signOut()}>
               Cerrar sesión
             </DropdownItem>
           </DropdownMenu>

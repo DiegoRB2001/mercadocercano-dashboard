@@ -16,7 +16,10 @@ const ThemeSwitch = () => {
     <Switch
       isSelected={theme === "light"}
       onValueChange={(value) => setTheme(value ? "light" : "dark")}
-    />
+      color="success"
+    >
+      Tema
+    </Switch>
   );
 };
 

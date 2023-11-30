@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MarketCard from "./MarketCard";
 import { Input, Select, SelectItem } from "@nextui-org/react";
+import { getMarkets } from "@/lib/firebase/firestore";
 
 const Content = () => {
   const [markets, setMarkets] = useState([]);
@@ -9,11 +10,9 @@ const Content = () => {
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    fetch(`/api/markets`).then((response) => {
-      response.json().then((data) => {
-        setMarkets(data);
-        setSortedMarkets(data);
-      });
+    getMarkets().then((markets) => {
+      setMarkets(markets);
+      setSortedMarkets(markets);
     });
   }, []);
 
@@ -44,8 +43,8 @@ const Content = () => {
                 return markets.filter((market) => {
                   const value =
                     searchFilter == "name"
-                      ? market[searchFilter]
-                      : market.location[searchFilter];
+                      ? market.data()[searchFilter]
+                      : market.data().location[searchFilter];
                   return value.toLowerCase().includes(e.target.value);
                 });
               }

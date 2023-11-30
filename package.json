@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
     "@nextui-org/react": "^2.2.3",
     "@react-google-maps/api": "^2.19.2",
     "firebase": "^10.5.2",

@@ -1,9 +1,8 @@
-import { Button, Card, CardBody } from "@nextui-org/react";
-import Image from "next/image";
+import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const CustomFileInput = ({ multiple, setData, files, value }) => {
+const CustomFileInput = ({ multiple = false, setData, files = [], value }) => {
   const onDrop = useCallback((acceptedFiles) => {
     setData((prevData) => ({
       ...prevData,
@@ -65,20 +64,15 @@ const CustomFileInput = ({ multiple, setData, files, value }) => {
               <div className="relative" key={file.name}>
                 <Image
                   src={URL.createObjectURL(file)}
-                  width={200}
-                  height={200}
                   alt={file.name}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
+                  className="z-0"
                 />
                 <Button
                   color="danger"
                   radius="full"
                   isIconOnly
                   size="sm"
-                  className=" absolute top-[-10px] right-[-10px] font-bold"
+                  className=" absolute top-[-10px] right-[-10px] font-bold z-10"
                   onClick={() => removeFile(file.name)}
                 >
                   X

@@ -1,23 +1,27 @@
 import { Input } from "@nextui-org/react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fromLatLng, setDefaults } from "react-geocode";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
 
-const AddressInput = ({ setData }) => {
+const AddressInput = ({
+  setData,
+  defaultValue,
+  mapWidth,
+  mapHeight,
+  initialCenter,
+  disabled,
+}) => {
   const [place, setPlace] = useState(null);
-  const [center, setCenter] = useState({
-    lat: 23.1927611,
-    lng: -113.2533392,
-  });
+  const [center, setCenter] = useState(initialCenter);
   const [zoom, setZoom] = useState(4);
 
   const containerStyle = {
-    width: "700px",
-    height: "700px",
+    width: mapWidth,
+    height: mapHeight,
   };
 
   setDefaults({
@@ -35,6 +39,15 @@ const AddressInput = ({ setData }) => {
   } = usePlacesAutocomplete({
     requestOptions: { region: "mx", language: "es-419" },
   });
+
+  useEffect(() => {
+    if (defaultValue != "" && !place) {
+      setValue(defaultValue, false);
+      setCenter(initialCenter);
+      setPlace(initialCenter);
+      setZoom(18);
+    }
+  }, [defaultValue]);
 
   const handleInput = (e) => {
     setValue(e.target.value);
@@ -92,16 +105,21 @@ const AddressInput = ({ setData }) => {
   return (
     <div className="w-full flex flex-col justify-center items-center gap-5">
       <Input
-        isClearable
-        onClear={() => {
-          clearSuggestions();
-          setData((prevData) => ({
-            ...prevData,
-            address: "",
-          }));
-          setPlace(null);
-          setValue("", false);
-        }}
+        isClearable={!disabled}
+        isDisabled={disabled}
+        onClear={
+          !disabled
+            ? () => {
+                clearSuggestions();
+                setData((prevData) => ({
+                  ...prevData,
+                  address: "",
+                }));
+                setPlace(null);
+                setValue("", false);
+              }
+            : undefined
+        }
         label="Ubicación"
         value={value}
         onChange={handleInput}
@@ -111,38 +129,42 @@ const AddressInput = ({ setData }) => {
       {status === "OK" && <ul>{renderSuggestions()}</ul>}
       <GoogleMap
         onClick={(e) => {
-          setData((prevData) => ({
-            ...prevData,
-            geolocation: {
-              latitude: e.latLng.lat(),
-              longitude: e.latLng.lng(),
-            },
-          }));
-          fromLatLng(e.latLng.lat(), e.latLng.lng())
-            .then(({ results }) => {
-              const [city, state] = [
-                results[0].address_components.filter((component) =>
-                  component.types.includes("locality")
-                )[0]["long_name"],
-                results[0].address_components.filter((component) =>
-                  component.types.includes("administrative_area_level_1")
-                )[0]["long_name"],
-              ];
-              setValue(results[0].formatted_address, false);
-              setData((prevData) => ({
-                ...prevData,
-                address: results[0].formatted_address,
-                location: {
-                  city,
-                  state,
-                },
-              }));
-            })
-            .catch(console.error);
+          if (!disabled) {
+            setData((prevData) => ({
+              ...prevData,
+              geolocation: {
+                latitude: e.latLng.lat(),
+                longitude: e.latLng.lng(),
+              },
+            }));
+            fromLatLng(e.latLng.lat(), e.latLng.lng())
+              .then(({ results }) => {
+                const [city, state] = [
+                  results[0].address_components.filter((component) =>
+                    component.types.includes("locality")
+                  )[0]["long_name"],
+                  results[0].address_components.filter((component) =>
+                    component.types.includes("administrative_area_level_1")
+                  )[0]["long_name"],
+                ];
+                setValue(results[0].formatted_address, false);
+                setData((prevData) => ({
+                  ...prevData,
+                  address: results[0].formatted_address,
+                  location: {
+                    city,
+                    state,
+                  },
+                }));
+              })
+              .catch(console.error);
 
-          setPlace({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+            setPlace({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+          }
         }}
         options={{
+          gestureHandling: !disabled ? "" : "none",
+          clickableIcons: !disabled,
           disableDefaultUI: true,
           mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_LIGHT_THEME_ID,
         }}
@@ -152,7 +174,10 @@ const AddressInput = ({ setData }) => {
       >
         {place && (
           <Marker
-            onClick={() => setPlace(null)}
+            cursor={!disabled ? "pointer" : "default"}
+            onClick={() => {
+              if (!disabled) setPlace(null);
+            }}
             position={{ lat: place.lat, lng: place.lng }}
           />
         )}

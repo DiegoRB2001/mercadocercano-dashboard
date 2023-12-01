@@ -72,7 +72,7 @@ const MarketPage = ({ params: { id } }) => {
   return (
     <div className="min-w-full min-h-full flex flex-col justify-center items-center">
       {Object.entries(data).length > 0 ? (
-        <Card className="lg:w-1/2 lg:h-1/2 lg:my-5 m-5 ">
+        <Card className="lg:w-1/2 w-11/12 lg:h-1/2 lg:my-5 m-5 ">
           <CardHeader className="grid grid-cols-3 gap-3">
             <div className="row-span-2">
               <div className="relative">

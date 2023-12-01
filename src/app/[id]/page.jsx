@@ -5,7 +5,12 @@ import CustomModal from "@/components/CustomModal";
 import CustomSelect from "@/components/CustomSelect";
 import ScheduleInput from "@/components/ScheduleInput";
 import { unFormatHour } from "@/functions/hourFormatter";
-import { PencilIcon } from "@heroicons/react/24/outline";
+import {
+  CheckCircleIcon,
+  PencilIcon,
+  TrashIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
 import {
   deleteMarket,
   getMarket,
@@ -67,7 +72,7 @@ const MarketPage = ({ params: { id } }) => {
   return (
     <div className="min-w-full min-h-full flex flex-col justify-center items-center">
       {Object.entries(data).length > 0 ? (
-        <Card className="w-1/2 h-1/2 my-5">
+        <Card className="lg:w-1/2 lg:h-1/2 lg:my-5 m-5 ">
           <CardHeader className="grid grid-cols-3 gap-3">
             <div className="row-span-2">
               <div className="relative">
@@ -96,15 +101,35 @@ const MarketPage = ({ params: { id } }) => {
               {!editing ? (
                 <>
                   <Button
+                    className="sm:flex hidden"
                     color="warning"
                     onClick={() => setEditing(true)}
                     isDisabled={editing}
                   >
                     Editar
                   </Button>
+                  <Button
+                    className="sm:hidden flex self-center justify-self-center"
+                    isIconOnly
+                    color="warning"
+                    onClick={() => setEditing(true)}
+                    isDisabled={editing}
+                  >
+                    <PencilIcon className="h-2/3" />
+                  </Button>
                   <CustomModal
+                    buttonClassName="sm:flex hidden"
                     modalMessage="¿Estas seguro que deseas eliminar el mercado?"
                     buttonContent="Eliminar"
+                    buttonColor="danger"
+                    isDisabled={disabled}
+                    onConfirm={handleAction}
+                  />
+                  <CustomModal
+                    buttonClassName="sm:hidden flex self-center justify-self-center"
+                    modalMessage="¿Estas seguro que deseas eliminar el mercado?"
+                    isButtonIconOnly
+                    buttonContent={<TrashIcon className="h-2/3" />}
                     buttonColor="danger"
                     isDisabled={disabled}
                     onConfirm={handleAction}
@@ -113,6 +138,7 @@ const MarketPage = ({ params: { id } }) => {
               ) : (
                 <>
                   <Button
+                    className="sm:flex hidden"
                     color="danger"
                     onClick={() => {
                       setData(prevData);
@@ -121,9 +147,30 @@ const MarketPage = ({ params: { id } }) => {
                   >
                     Cancelar
                   </Button>
+                  <Button
+                    className="sm:hidden flex self-center justify-self-center"
+                    isIconOnly
+                    color="danger"
+                    onClick={() => {
+                      setData(prevData);
+                      setEditing(false);
+                    }}
+                  >
+                    <XCircleIcon className="h-2/3" />
+                  </Button>
                   <CustomModal
+                    buttonClassName="sm:flex hidden"
                     modalMessage="¿Estas seguro que deseas modificar el mercado?"
                     buttonContent="Modificar"
+                    buttonColor="success"
+                    isDisabled={disabled}
+                    onConfirm={handleAction}
+                  />
+                  <CustomModal
+                    buttonClassName="sm:hidden flex self-center justify-self-center"
+                    modalMessage="¿Estas seguro que deseas modificar el mercado?"
+                    isButtonIconOnly
+                    buttonContent={<CheckCircleIcon className="h-2/3" />}
                     buttonColor="success"
                     isDisabled={disabled}
                     onConfirm={handleAction}
@@ -250,8 +297,6 @@ const MarketPage = ({ params: { id } }) => {
               disabled={!editing}
               setData={setData}
               defaultValue={data.address || ""}
-              mapWidth={500}
-              mapHeight={500}
               initialCenter={
                 data.geolocation
                   ? {

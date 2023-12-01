@@ -127,61 +127,62 @@ const AddressInput = ({
         placeholder="Escribe una ubicación"
       />
       {status === "OK" && <ul>{renderSuggestions()}</ul>}
-      <GoogleMap
-        onClick={(e) => {
-          if (!disabled) {
-            setData((prevData) => ({
-              ...prevData,
-              geolocation: {
-                latitude: e.latLng.lat(),
-                longitude: e.latLng.lng(),
-              },
-            }));
-            fromLatLng(e.latLng.lat(), e.latLng.lng())
-              .then(({ results }) => {
-                const [city, state] = [
-                  results[0].address_components.filter((component) =>
-                    component.types.includes("locality")
-                  )[0]["long_name"],
-                  results[0].address_components.filter((component) =>
-                    component.types.includes("administrative_area_level_1")
-                  )[0]["long_name"],
-                ];
-                setValue(results[0].formatted_address, false);
-                setData((prevData) => ({
-                  ...prevData,
-                  address: results[0].formatted_address,
-                  location: {
-                    city,
-                    state,
-                  },
-                }));
-              })
-              .catch(console.error);
-
-            setPlace({ lat: e.latLng.lat(), lng: e.latLng.lng() });
-          }
-        }}
-        options={{
-          gestureHandling: !disabled ? "" : "none",
-          clickableIcons: !disabled,
-          disableDefaultUI: true,
-          mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_LIGHT_THEME_ID,
-        }}
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={zoom}
-      >
-        {place && (
-          <Marker
-            cursor={!disabled ? "pointer" : "default"}
-            onClick={() => {
-              if (!disabled) setPlace(null);
-            }}
-            position={{ lat: place.lat, lng: place.lng }}
-          />
-        )}
-      </GoogleMap>
+      <div className="overflow-hidden">
+        <GoogleMap
+          onClick={(e) => {
+            if (!disabled) {
+              setData((prevData) => ({
+                ...prevData,
+                geolocation: {
+                  latitude: e.latLng.lat(),
+                  longitude: e.latLng.lng(),
+                },
+              }));
+              fromLatLng(e.latLng.lat(), e.latLng.lng())
+                .then(({ results }) => {
+                  const [city, state] = [
+                    results[0].address_components.filter((component) =>
+                      component.types.includes("locality")
+                    )[0]["long_name"],
+                    results[0].address_components.filter((component) =>
+                      component.types.includes("administrative_area_level_1")
+                    )[0]["long_name"],
+                  ];
+                  setValue(results[0].formatted_address, false);
+                  setData((prevData) => ({
+                    ...prevData,
+                    address: results[0].formatted_address,
+                    location: {
+                      city,
+                      state,
+                    },
+                  }));
+                })
+                .catch(console.error);
+              setPlace({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+            }
+          }}
+          options={{
+            gestureHandling: !disabled ? "" : "none",
+            clickableIcons: !disabled,
+            disableDefaultUI: true,
+            mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_LIGHT_THEME_ID,
+          }}
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={zoom}
+        >
+          {place && (
+            <Marker
+              cursor={!disabled ? "pointer" : "default"}
+              onClick={() => {
+                if (!disabled) setPlace(null);
+              }}
+              position={{ lat: place.lat, lng: place.lng }}
+            />
+          )}
+        </GoogleMap>
+      </div>
     </div>
   );
 };

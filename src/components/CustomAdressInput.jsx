@@ -8,15 +8,14 @@ const libraries = ["places"];
 const CustomAdressInput = ({
   setData,
   defaultValue = "",
-  mapWidth = 700,
-  mapHeight = 700,
+  mapWidth = 400,
+  mapHeight = 400,
   disabled = false,
   initialCenter = {
     lat: 23.1927611,
     lng: -113.2533392,
   },
 }) => {
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   const { isLoaded } = useLoadScript({

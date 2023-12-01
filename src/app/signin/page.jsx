@@ -1,8 +1,7 @@
 "use client";
 
-import { Button, Chip, Input } from "@nextui-org/react";
+import { Button, Chip, Image, Input } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -28,17 +27,16 @@ const SignInPage = () => {
 
   return (
     <div className="flex min-h-screen flex-col justify-center items-center">
-      <div className="w-1/3 flex flex-row justify-center">
+      <div className="md:w-2/3 md:grid md:grid-cols-2 lg:w-1/2 lg:grid lg:grid-cols-2 w-5/6 flex flex-col justify-center items-center">
         <Image
-          priority
-          width={200}
-          height={200}
-          style={{ width: "auto", height: "auto" }}
           src={"/assets/logo.png"}
           alt="Mercado Cercano Logo"
           className="justify-self-center self-center"
         />
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5 flex-1">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-5 flex-1 w-full"
+        >
           <h1 className="text-center font-bold text-lg">Iniciar sesión</h1>
           {error && (
             <Chip color="danger" className="self-center">

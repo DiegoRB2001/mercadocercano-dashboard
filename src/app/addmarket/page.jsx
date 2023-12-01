@@ -42,7 +42,7 @@ const AddMarketPage = () => {
   };
 
   return (
-    <form className="flex flex-col gap-5 h-full items-center justify-center w-1/2 mx-auto">
+    <form className="flex flex-col gap-5 h-full items-center justify-center lg:w-1/2 lg:p-0 w-3/4  mx-auto">
       <h1 className="text-2xl text-center font-bold mt-5">Agregar mercado</h1>
       <Input
         required

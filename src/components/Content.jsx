@@ -55,7 +55,7 @@ const Content = () => {
           aria-label="Tipo de busqueda"
           value={searchFilter}
           label="Tipo de búsqueda"
-          className="max-w-xs p-5"
+          className="max-w-xs p-5 pl-0"
           selectedKeys={searchFilter}
           selectionMode="single"
           disallowEmptySelection
@@ -76,7 +76,7 @@ const Content = () => {
           </SelectItem>
         </Select>
       </div>
-      <div className="grid grid-cols-3 gap-5 p-5">
+      <div className="grid lg:grid-cols-3 grid-cols-2 gap-5 p-5">
         {sortedMarkets.map((market) => (
           <MarketCard key={market.id} market={market} />
         ))}

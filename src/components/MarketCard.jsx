@@ -19,8 +19,12 @@ const MarketCard = ({ market }) => {
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
         <h1 className="font-bold text-large">{market.data().name}</h1>
       </CardHeader>
-      <CardBody className="overflow-visible py-2 items-center">
-        <Image alt="Card background" src={market.data().cover} width={500} />
+      <CardBody className="overflow-visible py-2 items-center justify-items-center">
+        <Image
+          alt="Card background"
+          src={market.data().cover}
+          className="justify-self-center self-center"
+        />
       </CardBody>
       <CardFooter>
         <p className="text-md">

@@ -15,6 +15,8 @@ const CustomAdressInput = ({
     lat: 23.1927611,
     lng: -113.2533392,
   },
+  isInvalid,
+  errorMessage,
 }) => {
   const [mounted, setMounted] = useState(false);
 
@@ -37,6 +39,8 @@ const CustomAdressInput = ({
       mapHeight={mapHeight}
       initialCenter={initialCenter}
       disabled={disabled}
+      isInvalid={isInvalid}
+      errorMessage={errorMessage}
     />
   ) : (
     <></>

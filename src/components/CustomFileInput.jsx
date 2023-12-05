@@ -1,8 +1,15 @@
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, Chip, Image } from "@nextui-org/react";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const CustomFileInput = ({ multiple = false, setData, files = [], value }) => {
+const CustomFileInput = ({
+  multiple = false,
+  setData,
+  files = [],
+  value,
+  isInvalid,
+  errorMessage,
+}) => {
   const onDrop = useCallback((acceptedFiles) => {
     setData((prevData) => ({
       ...prevData,
@@ -47,6 +54,11 @@ const CustomFileInput = ({ multiple = false, setData, files = [], value }) => {
       <input {...getInputProps()} />
       <Card className="cursor-pointer">
         <CardBody>
+          {isInvalid && (
+            <Chip color="danger" className="self-center m-2">
+              {errorMessage}
+            </Chip>
+          )}
           {isDragActive ? (
             <p className="text-center">Arrastra aqui las imagenes...</p>
           ) : (

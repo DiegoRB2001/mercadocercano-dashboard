@@ -18,7 +18,7 @@ const Content = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row items-center">
+      <div className="flex md:flex-row flex-col ">
         <Input
           type="text"
           placeholder={`Buscar ${
@@ -33,7 +33,7 @@ const Content = () => {
             setSearchValue("");
             setSortedMarkets(markets);
           }}
-          className="p-5"
+          className="p-5 pb-0 md:pb-5 md:pr-0"
           value={searchValue}
           onChange={(e) =>
             setSortedMarkets(() => {
@@ -55,7 +55,7 @@ const Content = () => {
           aria-label="Tipo de busqueda"
           value={searchFilter}
           label="Tipo de búsqueda"
-          className="max-w-xs p-5 pl-0"
+          className="md:max-w-xs p-5 w-1/2"
           selectedKeys={searchFilter}
           selectionMode="single"
           disallowEmptySelection

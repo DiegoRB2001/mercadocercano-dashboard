@@ -1,19 +1,28 @@
 import { formatHour } from "@/functions/hourFormatter";
-import { Input } from "@nextui-org/react";
+import { Chip, Input } from "@nextui-org/react";
 import { useState } from "react";
 
-const ScheduleInput = ({ disabled = false, startValue, endValue, setData }) => {
+const ScheduleInput = ({
+  disabled = false,
+  startValue,
+  endValue,
+  setData,
+  isInvalid,
+  errorMessage,
+}) => {
   const [schedule, setSchedule] = useState({
     startHour: startValue,
     endHour: endValue,
   });
   const { startHour, endHour } = schedule;
   return (
-    <div className="w-full grid grid-cols-2 gap-2">
+    <div className="w-full grid grid-cols-2 gap-2 justify-items-center">
       <Input
         isDisabled={disabled}
         value={startHour}
         required
+        isInvalid={isInvalid}
+        errorMessage={isInvalid && errorMessage}
         type="time"
         label="Hora de apertura"
         onChange={(e) => {
@@ -30,6 +39,7 @@ const ScheduleInput = ({ disabled = false, startValue, endValue, setData }) => {
       <Input
         isDisabled={disabled}
         required
+        isInvalid={isInvalid}
         value={endHour}
         type="time"
         label="Hora de cierre"

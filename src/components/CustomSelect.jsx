@@ -49,10 +49,18 @@ const items = [
   "Hongos",
 ];
 
-const CustomSelect = ({ products = [], setData, disabled = false }) => {
+const CustomSelect = ({
+  products = [],
+  setData,
+  disabled = false,
+  isInvalid,
+  errorMessage,
+}) => {
   return (
     <Select
       isDisabled={disabled}
+      isInvalid={isInvalid}
+      errorMessage={errorMessage}
       required
       selectedKeys={products.length > 0 ? products : []}
       aria-label="Productos"

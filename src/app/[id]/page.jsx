@@ -39,6 +39,15 @@ const MarketPage = ({ params: { id } }) => {
   const [disabled, setDisabled] = useState(false);
   const [data, setData] = useState({});
   const [prevData, setPrevData] = useState({});
+  const [error, setError] = useState({
+    products: false,
+    images: false,
+    name: false,
+    description: false,
+    address: false,
+    schedule: false,
+    phone: false,
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -55,6 +64,24 @@ const MarketPage = ({ params: { id } }) => {
   const handleAction = async () => {
     setDisabled(true);
     if (editing) {
+      setError(() => ({
+        products: data.products.length == 0,
+        images: data.images.length == 0,
+        cover: data.cover.length == 0,
+        name: data.name.length == 0,
+        description: data.description.length == 0,
+        schedule: data.schedule.length == 0,
+        phone: data.phone.length == 0,
+        address: data.address.length == 0,
+      }));
+      var valid = true;
+      Object.values(error).map((e) => {
+        if (e) valid = e;
+      });
+      if (valid) {
+        setDisabled(false);
+        return;
+      }
       await updateMarket(id, data);
     } else {
       await deleteFile(data.cover);
@@ -185,6 +212,8 @@ const MarketPage = ({ params: { id } }) => {
               isDisabled={!editing}
               label="Nombre"
               value={data.name}
+              isInvalid={error.name}
+              errorMessage={error.name && "Inserta un nombre correcto."}
               onChange={(e) =>
                 setData((prevData) => ({ ...prevData, name: e.target.value }))
               }
@@ -196,6 +225,10 @@ const MarketPage = ({ params: { id } }) => {
                 isDisabled={!editing}
                 label="Descripción"
                 value={data.description}
+                isInvalid={error.description}
+                errorMessage={
+                  error.description && "Inserta una descripción correcta."
+                }
                 onChange={(e) =>
                   setData((prevData) => ({
                     ...prevData,
@@ -211,10 +244,11 @@ const MarketPage = ({ params: { id } }) => {
                 isDisabled={!editing}
                 type="tel"
                 label="Teléfono"
-                pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
                 placeholder="Escribe un teléfono"
                 className="w-fit "
                 value={data.phone}
+                isInvalid={error.phone}
+                errorMessage={error.phone && "Inserta un teléfono correcto."}
                 onChange={(e) =>
                   setData((prevData) => ({
                     ...prevData,
@@ -228,11 +262,15 @@ const MarketPage = ({ params: { id } }) => {
           <CardBody className="grid grid-cols-2 gap-2">
             <ScheduleInput
               disabled={!editing}
+              isInvalid={error.schedule}
+              errorMessage={error.schedule && "Inserta un horario correcto."}
               setData={setData}
               startValue={unFormatHour(data.schedule.split(" - ")[0])}
               endValue={unFormatHour(data.schedule.split(" - ")[1])}
             />
             <CustomSelect
+              isInvalid={error.products}
+              errorMessage={error.products && "Inserta algún producto."}
               products={data.products}
               setData={setData}
               disabled={!editing}
@@ -240,6 +278,11 @@ const MarketPage = ({ params: { id } }) => {
           </CardBody>
           <Divider />
           <CardFooter className="flex flex-col items-center gap-5">
+            {error.images && (
+              <Chip color="danger" className="self-center m-2">
+                {error.images && "Inserta alguna imagen adicional."}
+              </Chip>
+            )}
             <ImageModal
               marketId={id}
               buttonColor="warning"
@@ -296,6 +339,10 @@ const MarketPage = ({ params: { id } }) => {
             <CustomAdressInput
               disabled={!editing}
               setData={setData}
+              isInvalid={error.address}
+              errorMessage={
+                error.address && "Inserta alguna dirección correcta."
+              }
               defaultValue={data.address || ""}
               initialCenter={
                 data.geolocation

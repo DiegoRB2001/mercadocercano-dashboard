@@ -60,7 +60,6 @@ const CustomModal = ({
                 </Button>
                 <Button
                   color="success"
-                  type="submit"
                   onPress={async () => {
                     await onConfirm();
                     onClose();

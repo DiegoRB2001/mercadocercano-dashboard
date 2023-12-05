@@ -27,7 +27,7 @@ const SignInPage = () => {
 
   return (
     <div className="flex min-h-screen flex-col justify-center items-center">
-      <div className="md:w-2/3 md:grid md:grid-cols-2 lg:w-1/2 lg:grid lg:grid-cols-2 w-5/6 flex flex-col justify-center items-center">
+      <div className=" lg:w-1/2 lg:grid lg:grid-cols-2 w-5/6 flex flex-col justify-center items-center">
         <Image
           src={"/assets/logo.png"}
           alt="Mercado Cercano Logo"

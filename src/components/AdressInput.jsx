@@ -14,6 +14,8 @@ const AddressInput = ({
   mapHeight,
   initialCenter,
   disabled,
+  isInvalid,
+  errorMessage,
 }) => {
   const [place, setPlace] = useState(null);
   const [center, setCenter] = useState(initialCenter);
@@ -73,6 +75,7 @@ const AddressInput = ({
         setZoom(18);
         setData((prevData) => ({
           ...prevData,
+          address: description,
           geolocation: {
             latitude: lat,
             longitude: lng,
@@ -105,6 +108,8 @@ const AddressInput = ({
   return (
     <div className="w-full flex flex-col justify-center items-center gap-5">
       <Input
+        isInvalid={isInvalid}
+        errorMessage={errorMessage}
         isClearable={!disabled}
         isDisabled={disabled}
         onClear={
@@ -120,11 +125,11 @@ const AddressInput = ({
               }
             : undefined
         }
-        label="Ubicación"
+        label="Dirección"
         value={value}
         onChange={handleInput}
         disabled={!ready}
-        placeholder="Escribe una ubicación"
+        placeholder="Escribe una dirección"
       />
       {status === "OK" && <ul>{renderSuggestions()}</ul>}
       <div className="overflow-hidden">

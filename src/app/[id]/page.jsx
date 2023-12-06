@@ -76,9 +76,9 @@ const MarketPage = ({ params: { id } }) => {
       }));
       var valid = true;
       Object.values(error).map((e) => {
-        if (e) valid = e;
+        if (e) valid = false;
       });
-      if (valid) {
+      if (!valid) {
         setDisabled(false);
         return;
       }

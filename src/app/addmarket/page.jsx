@@ -51,9 +51,9 @@ const AddMarketPage = () => {
     }));
     var valid = true;
     Object.values(error).map((e) => {
-      if (e) valid = e;
+      if (e) valid = false;
     });
-    if (valid) {
+    if (!valid) {
       setDisabled(false);
       return;
     }
@@ -61,7 +61,6 @@ const AddMarketPage = () => {
     setDisabled(false);
     router.push("/");
   };
-  console.log(data);
   return (
     <form className="flex flex-col gap-5 h-full items-center justify-center lg:w-1/2 lg:p-0 w-3/4  mx-auto">
       <h1 className="text-2xl text-center font-bold mt-5">Agregar mercado</h1>

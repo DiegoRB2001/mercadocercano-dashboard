@@ -64,7 +64,7 @@ const MarketPage = ({ params: { id } }) => {
   const handleAction = async () => {
     setDisabled(true);
     if (editing) {
-      setError(() => ({
+      const errors = {
         products: data.products.length == 0,
         images: data.images.length == 0,
         cover: data.cover.length == 0,
@@ -73,9 +73,10 @@ const MarketPage = ({ params: { id } }) => {
         schedule: data.schedule.length == 0,
         phone: data.phone.length == 0,
         address: data.address.length == 0,
-      }));
+      };
+      setError(() => errors);
       var valid = true;
-      Object.values(error).map((e) => {
+      Object.values(errors).map((e) => {
         if (e) valid = false;
       });
       if (!valid) {
@@ -208,7 +209,6 @@ const MarketPage = ({ params: { id } }) => {
 
             <Input
               className="row-start-1 col-start-2"
-              isClearable={editing}
               isDisabled={!editing}
               label="Nombre"
               value={data.name}
@@ -221,7 +221,6 @@ const MarketPage = ({ params: { id } }) => {
             />
             <div className="flex flex-col gap-2 col-span-2 col-start-2">
               <Textarea
-                isClearable={editing}
                 isDisabled={!editing}
                 label="Descripción"
                 value={data.description}
